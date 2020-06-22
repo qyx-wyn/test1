@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssm.login.dao.LoginDao">
+
+  	<select id="getLogin" parameterType="com.ssm.login.pojo.Login"
+		resultType="com.ssm.login.pojo.Login">
+		select uid, username, psd as password from admin
+        where username=#{username}
+	</select>
+	
+	<select id="getDocByDyn" parameterType="string"
+		resultType="com.ssm.login.pojo.Doctor">
+		select id, doc_name, story ,dynasty,book from doctor
+        where dynasty like concat('%', #{dynasty, jdbcType=VARCHAR,
+		javaType=string}, '%')
+	</select>
+	
+	<select id="getPre" parameterType="int"
+		resultType="com.ssm.login.pojo.Prescription">
+		select * from prescription
+        where doc_id=#{doc_id}
+	</select>
+	
+	<select id="getDoc" parameterType="string"
+		resultType="com.ssm.login.pojo.Doctor">
+		select * from doctor
+        where doc_name like concat('%', #{doc}, '%')
+	</select>
+	
+	<select id="getCityHospital" parameterType="string"
+		resultType="com.ssm.login.pojo.Hospital">
+		select * from hospital
+        where city=#{city}
+	</select>
+	
+	<select id="getHospitals" parameterType="string"
+		resultType="com.ssm.login.pojo.Hospital">
+		select * from hospital
+        where hos_name like concat('%', #{hos_name}, '%')
+	</select>
+	
+	<select id="showHospital" parameterType="string"
+		resultType="com.ssm.login.pojo.Hospital">
+		select * from hospital
+        where hos_name = #{hos_name}
+	</select>
+	
+	<select id="getCityZY" parameterType="string"
+		resultType="com.ssm.login.pojo.Tcm">
+		select * from tcm
+        where location like concat('%', #{location, jdbcType=VARCHAR,
+		javaType=string}, '%')
+	</select>
+	
+	<select id="getZYs" parameterType="string"
+		resultType="com.ssm.login.pojo.Tcm">
+		select * from tcm
+        where Tcm_name like concat('%', #{Tcm_name, jdbcType=VARCHAR,
+		javaType=string}, '%')
+	</select>
+	
+	<insert id="insertDoctor" parameterType="com.ssm.login.pojo.Doctor" keyProperty="id" useGeneratedKeys="true">
+        insert into doctor (doc_name,story,dynasty,book) 
+        value(#{doc_name},#{story},#{dynasty},#{book})
+    </insert> 
+    
+    <select id="getDoctor" parameterType="string" resultType="com.ssm.login.pojo.Doctor">
+		select * from doctor where doc_name = #{doc_name}
+	</select>
+	
+	<insert id="InsertAdv" parameterType="com.ssm.login.pojo.FeedBack">
+	   insert into advice(advice,status)
+	   values(#{advice},#{status})
+	</insert>
+	
+	
+	<insert id="insertTcm" parameterType="com.ssm.login.pojo.Tcm" keyProperty="id" useGeneratedKeys="true">
+        insert into tcm (Tcm_name,location,origin,taste,efficacy,processing,img) 
+        value(#{Tcm_name},#{location},#{origin},#{taste},#{efficacy},#{processing},#{img})
+    </insert> 
+    
+    <select id="getNameTcm" parameterType="string" resultType="com.ssm.login.pojo.Tcm">
+		select * from tcm where Tcm_name = #{Tcm_name}
+	</select>
+	
+	
+	<insert id="insertHospial" parameterType="com.ssm.login.pojo.Hospital" keyProperty="id" useGeneratedKeys="true">
+        insert into hospital (hos_name,city,address,lev,type,postcode,tel,website,special,recommend) 
+        value(#{hos_name},#{city},#{address},#{lev},#{type},#{postcode},#{tel},#{website},#{special},#{recommend})
+    </insert> 
+    
+    <select id="getHospital" parameterType="string" resultType="com.ssm.login.pojo.Hospital">
+		select * from hospital where hos_name = #{hos_name}
+	</select>
+	
+	
+	<update id="UpdateTcm" parameterType="com.ssm.login.pojo.Tcm">
+	  update tcm set location=#{location},origin=#{origin}
+	  ,taste=#{taste},efficacy=#{efficacy},processing=#{processing}
+	  where Tcm_name=#{Tcm_name}
+	</update>
+	
+	<update id="UpdateHospital" parameterType="com.ssm.login.pojo.Hospital">
+	  update hospital set city=#{city},address=#{address},lev=#{lev},type=#{type}
+	  ,postcode=#{postcode},tel=#{tel},website=#{website},special=#{special},recommend=#{recommend}
+	  where hos_name=#{hos_name}
+	</update>
+	
+	<select id="getZY" parameterType="string"
+		resultType="com.ssm.login.pojo.Tcm">
+		select * from tcm
+        where Tcm_name =#{Tcm_name}
+	</select>
+	
+	
+	<select id="FindAllHos" parameterType="string"
+		resultType="com.ssm.login.pojo.Hospital">
+		select * from hospital
+	</select>
+	
+	<select id="FindAllZY" parameterType="string"
+		resultType="com.ssm.login.pojo.Tcm">
+		select * from tcm
+	</select>
+	
+	<select id="FindAllDoc" parameterType="string"
+		resultType="com.ssm.login.pojo.Doctor">
+		select * from doctor
+	</select>
+	
+	<select id="getDoctorID" parameterType="string"
+		resultType="int">
+		select id from doctor
+        where doc_name=#{doc_name}
+	</select>
+	
+	<update id="updateDoc" parameterType="com.ssm.login.pojo.Doctor">
+	  update doctor set doc_name=#{doc_name},story=#{story}
+	  ,dynasty=#{dynasty},book=#{book}
+	  where id=#{id}
+	</update>
+	
+	<update id="updatePre" parameterType="com.ssm.login.pojo.Prescription">
+	  update prescription set name=#{name},form=#{form},major=#{major}
+	  where id=#{id}
+	</update>
+	
+	
+	 
+    <insert id="insertPrescription" parameterType="com.ssm.login.pojo.Prescription" keyProperty="id" useGeneratedKeys="true">
+        insert into prescription (name,form,major,doc_id) 
+        value(#{name},#{form},#{major},#{doc_id})
+    </insert> 
+    <select id="getPrescription" parameterType="string" resultType="com.ssm.login.pojo.Prescription">
+		select * from prescription where name = #{name}
+	</select> 
+	
+	<select id="getDoctorById" parameterType="int" resultType="com.ssm.login.pojo.Doctor">
+		select * from doctor where id = #{id}
+	</select>
+	
+	
+	<select id="getAllSta"  parameterType="int" resultType="com.ssm.login.pojo.FeedBack">
+		select * from advice where status = #{status}
+	</select>
+	<update id="updateSta" parameterType="int">
+	  update advice set status=0
+	  where id=#{id}
+	</update>
+	<delete id="deleteSta" parameterType="int">
+       delete from advice where id = #{id}
+    </delete>
+   
+</mapper>
